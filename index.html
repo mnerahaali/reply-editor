@@ -6,9 +6,7 @@
 <title>بُصر - محرر الردود</title>
 
 <style>
-* {
-box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
 margin: 0;
@@ -18,8 +16,8 @@ color: #222;
 }
 
 .topbar {
-background: #ffffff;
-border-bottom: 1px solid #dcdcdc;
+background: #fff;
+border-bottom: 1px solid #ddd;
 padding: 14px 18px;
 display: flex;
 justify-content: space-between;
@@ -42,33 +40,32 @@ gap: 8px;
 .top-actions button {
 padding: 8px 12px;
 border: none;
-background: #4caf50;
+background: #188c2f;
 color: #fff;
-border-radius: 6px;
+border-radius: 8px;
 cursor: pointer;
 font-size: 14px;
 }
 
 .top-actions button:hover {
-background: #3f9543;
+background: #146f26;
 }
 
 .layout {
 display: flex;
 min-height: calc(100vh - 70px);
-align-items: stretch;
 }
 
 .builder-panel {
-width: 48%;
-background: #ffffff;
-border-left: 1px solid #dcdcdc;
+width: 46%;
+background: #fff;
+border-left: 1px solid #ddd;
 padding: 16px;
 overflow-y: auto;
 }
 
 .output-panel {
-width: 52%;
+width: 54%;
 padding: 16px;
 display: flex;
 flex-direction: column;
@@ -98,9 +95,9 @@ align-items: center;
 .symbol-btn,
 .name-btn {
 padding: 8px 10px;
-border: 1px solid #ccc;
+border: 1px solid #cfcfcf;
 background: #fafafa;
-border-radius: 6px;
+border-radius: 8px;
 cursor: pointer;
 font-size: 14px;
 line-height: 1.4;
@@ -112,16 +109,16 @@ line-height: 1.4;
 background: #efefef;
 }
 
+.name-btn.active {
+background: #188c2f !important;
+color: #fff;
+border-color: #188c2f;
+}
+
 .symbol-btn {
 min-width: 42px;
 font-weight: bold;
 font-size: 15px;
-}
-
-.name-btn.active {
-background: #4caf50 !important;
-color: #fff;
-border-color: #4caf50;
 }
 
 .note {
@@ -131,11 +128,13 @@ margin-top: 8px;
 }
 
 .output-card {
-background: #ffffff;
-border: 1px solid #dcdcdc;
+background: #fff;
+border: 1px solid #ddd;
 border-radius: 10px;
 padding: 12px;
-margin-bottom: 14px;
+height: 100%;
+display: flex;
+flex-direction: column;
 }
 
 .output-card strong {
@@ -144,59 +143,19 @@ margin-bottom: 10px;
 font-size: 18px;
 }
 
-.symbols-box {
-min-height: 56px;
-border: 1px solid #ddd;
-border-radius: 8px;
-padding: 10px;
-background: #fafafa;
-font-size: 18px;
-line-height: 1.8;
-white-space: pre-wrap;
-overflow-wrap: anywhere;
-}
-
-#editor {
+textarea {
 width: 100%;
 flex: 1;
-min-height: 720px;
-border: 1px solid #ddd;
-border-radius: 8px;
+min-height: 760px;
+border: 1px solid #d5d5d5;
+border-radius: 10px;
 padding: 14px;
-background: #fff;
-overflow-y: auto;
-line-height: 1.9;
+resize: vertical;
 font-size: 18px;
-white-space: pre-wrap;
-word-break: break-word;
-outline: none;
-}
-
-.opening-line,
-.closing-block {
-color: #2e7d32;
-font-weight: 700;
-}
-
-.sub-actions {
-display: flex;
-flex-wrap: wrap;
-gap: 8px;
-margin-top: 10px;
-}
-
-.sub-actions button {
-padding: 7px 11px;
-border: none;
-background: #777;
-color: #fff;
-border-radius: 6px;
-cursor: pointer;
-font-size: 13px;
-}
-
-.sub-actions button:hover {
-background: #5f5f5f;
+line-height: 1.9;
+direction: rtl;
+font-family: Arial, sans-serif;
+background: #fff;
 }
 
 @media (max-width: 950px) {
@@ -209,7 +168,7 @@ flex-direction: column;
 width: 100%;
 }
 
-#editor {
+textarea {
 min-height: 420px;
 }
 }
@@ -221,11 +180,9 @@ min-height: 420px;
 <h1>بُصر - محرر الردود</h1>
 
 <div class="top-actions">
-<button onclick="copyFullMessage()">نسخ الرسالة كاملة</button>
-<button onclick="newMessage()">رسالة جديدة</button>
-<button onclick="clearMiddle()">تفريغ</button>
+<button onclick="copyAll()">نسخ</button>
+<button onclick="clearEditor()">تفريغ</button>
 <button onclick="removeLastLine()">حذف آخر سطر</button>
-<button onclick="clearSymbols()">مسح الرموز</button>
 </div>
 </header>
 
@@ -235,134 +192,112 @@ min-height: 420px;
 
 <div class="panel-group">
 <h2>الرموز</h2>
-
 <div class="symbols-row">
-<button class="symbol-btn" title="فاصل بين رمز ورمز" onclick="addSymbol('/')">/</button>
-<button class="symbol-btn" title="عدم وجود توقيع أو ختم" onclick="addSymbol('●')">●</button>
-<button class="symbol-btn" title="نقص معلومة مهمة" onclick="addSymbol('●●')">●●</button>
-<button class="symbol-btn" title="عدم وجود مرفق، أو صيغة المرفق لا تعمل" onclick="addSymbol('●●●')">●●●</button>
-<button class="symbol-btn" title="رسالة وصلت بالخطأ" onclick="addSymbol('@')">@</button>
-<button class="symbol-btn" title="نماذج الفرص التطوعية فقط" onclick="addSymbol('#')">#</button>
-<button class="symbol-btn" title="الفرصة أُرسلت سابقًا" onclick="addSymbol('&&&&')">&&&&</button>
-<button class="symbol-btn" title="فرص المدارس الأهلية" onclick="addSymbol('%%%')">%%%</button>
-<button class="symbol-btn" title="PDF" onclick="addSymbol('PDF')">PDF</button>
-<button class="symbol-btn" title="المطلوب إرسال النموذج بصيغة PDF" onclick="addSymbol('^^^')">^^^</button>
-<button class="symbol-btn" title="إضافة عنوان البريد" onclick="addSymbol('~~~')">~~~</button>
-<button class="symbol-btn" title="إرسال الموقع" onclick="addSymbol('∞')">∞</button>
-<button class="symbol-btn" title="تصويب معلومة" onclick="addSymbol('>>>')">&gt;&gt;&gt;</button>
-<button class="symbol-btn" title="النموذج مُعبأ بخط اليد" onclick="addSymbol('***')">***</button>
-<button class="symbol-btn" title="النموذج الرسمي للقسم" onclick="addSymbol('%●%')">%●%</button>
+<button class="symbol-btn" title="فاصل بين رمز ورمز" onclick="insertAtCursor('/')">/</button>
+<button class="symbol-btn" title="عدم وجود توقيع أو ختم" onclick="insertAtCursor('●')">●</button>
+<button class="symbol-btn" title="نقص معلومة مهمة" onclick="insertAtCursor('●●')">●●</button>
+<button class="symbol-btn" title="عدم وجود مرفق، أو صيغة المرفق لا تعمل" onclick="insertAtCursor('●●●')">●●●</button>
+<button class="symbol-btn" title="رسالة وصلت بالخطأ" onclick="insertAtCursor('@')">@</button>
+<button class="symbol-btn" title="نماذج الفرص التطوعية فقط" onclick="insertAtCursor('#')">#</button>
+<button class="symbol-btn" title="الفرصة أُرسلت سابقًا" onclick="insertAtCursor('&&&&')">&&&&</button>
+<button class="symbol-btn" title="فرص المدارس الأهلية" onclick="insertAtCursor('%%%')">%%%</button>
+<button class="symbol-btn" title="PDF" onclick="insertAtCursor('PDF')">PDF</button>
+<button class="symbol-btn" title="المطلوب إرسال النموذج بصيغة PDF" onclick="insertAtCursor('^^^')">^^^</button>
+<button class="symbol-btn" title="إضافة عنوان البريد" onclick="insertAtCursor('~~~')">~~~</button>
+<button class="symbol-btn" title="إرسال الموقع" onclick="insertAtCursor('∞')">∞</button>
+<button class="symbol-btn" title="تصويب معلومة" onclick="insertAtCursor('>>>')">&gt;&gt;&gt;</button>
+<button class="symbol-btn" title="النموذج مُعبأ بخط اليد" onclick="insertAtCursor('***')">***</button>
+<button class="symbol-btn" title="نموذج القسم للفرص" onclick="insertAtCursor('%●%')">%●%</button>
 </div>
-
 <div class="note">عند تمرير المؤشر على الرمز يظهر ما يشير إليه.</div>
 </div>
 
 <div class="panel-group">
 <h2>النصوص الجاهزة</h2>
 <div class="button-grid">
-<button onclick="insertFullMessage(`فضلاً ختم الفرصة التطوعية، أو إدراج توقيع مدير/ ة المدرسة في حال عدم توفر ختم.`)">
-ختم أو توقيع
-</button>
-
-<button onclick="insertFullMessage(`النموذج مُعبأ بخط اليد، نأمل تعبئته إلكترونيًّا وإعادة إرساله.`)">
-تعبئة إلكترونيًّا وإعادة الإرسال
-</button>
+<button onclick="insertFullMessage(`فضلاً ختم الفرصة التطوعية، أو إدراج توقيع مدير/ ة المدرسة في حال عدم توفر ختم.`)">ختم أو توقيع</button>
 
 <button onclick="insertFullMessage(`الفرصة وُجِّهت للمسؤولة عن الإدخال ..
-ملاحظة: النموذج مُعبأ بخط اليد، الحقًا في الفرص القادمة نأمل تعبئته إلكترونيًّا إن أمكن.`)">
-خُطّ باليد مع التوجيه
-</button>
+ملاحظة: النموذج مُعبأ بخط اليد، الحقًا في الفرص القادمة نأمل تعبئته إلكترونيًّا إن أمكن.`)">خُطّ باليد مع التوجيه</button>
+
+<button onclick="insertFullMessage(`النموذج مُعبأ بخط اليد، نأمل تعبئته إلكترونيًّا وإعادة إرساله.`)">تعبئة إلكترونيًّا وإعادة إرساله</button>
 
 <button onclick="insertFullMessage(`الرسالة لا تحتوي على مرفقات ..
 - إن كانت فرصة تطوعية فضلاً إرفاقها من جديد بصيغة PDF على هذا البريد.
-- وإن كانت كُشوف وشواهد على تنفيذ الفرصة فتُوجَّه إلى بريد منسقـ / ة الفرصة في (قسم المسؤولية المجتمعية والعمل التطوعي).`)">
-لا توجد مرفقات
-</button>
+- وإن كانت كُشوف وشواهد على تنفيذ الفرصة فتُوجَّه إلى بريد منسقـ / ة الفرصة في (قسم المسؤولية المجتمعية والعمل التطوعي).`)">لا توجد مرفقات</button>
 
 <button onclick="insertFullMessage(`المرفق غير واضح.
 نأمل إعادة تصويره من جديد بدقة أفضل، وإعادة إرفاقه.
 نأمل إعادة إدراجه من جديد وحفظه بصيغة PDF وإرفاقه في البريد.
 - كما نأمل الحقًا إرسال الفرص بصيغة PDF إن أمكن.
-وإن تعذَّر ذلك فنأمل تصويرها بقياسات أفضل وبدقة أعلى`)">
-المرفق غير واضح
-</button>
+وإن تعذَّر ذلك فنأمل تصويرها بقياسات أفضل وبدقة أعلى`)">المرفق غير واضح</button>
 
-<button onclick="insertFullMessage(`الملف المُرفق تعذَّرت معاينته
+<button onclick="insertFullMessage(`الملف المُرفق تعذَّرت معاينتُه
 فضلاً إعادة إرفاقه بصيغة PDF إن أمكن .
 وإن تعذَّر ذلك فنأمل إرساله بإحدى الصيغ التالية:
-PNG, JPG, JPEG.`)">
-تعذرت المعاينة
-</button>
+PNG, JPG, JPEG.`)">تعذرت معاينته</button>
 
 <button onclick="insertFullMessage(`المُرفَق مُصوَّر بلقطة شاشة لأن الصيغة المُرسلة غير مدعومة.
 الحقًا نأمل إرسال النموذج بصيغة PDF وإن تعذَّر فالصيغ التالية
-PNG, JPG, JPEG, مدعومة`)">
-لقطة شاشة
-</button>
+PNG, JPG, JPEG, مدعومة`)">لقطة شاشة</button>
 
 <button onclick="insertFullMessage(`هذا البريد مُخصَّص لنماذج الفرص التطوعية فقط.
-فضلاً إرسال كُشوف وشواهد الفرص التطوعية (الصور دون الفيديو) إلى البريد الخاص بمنسقـ/ة الفرصة في (قسم المسؤولية المجتمعية والعمل التطوعي).`)">
-البريد مخصص للفرص فقط
-</button>
+فضلاً إرسال كُشوف وشواهد الفرص التطوعية (الصور دون الفيديو) إلى البريد الخاص بمنسقـ/ة الفرصة في (قسم المسؤولية المجتمعية والعمل التطوعي).`)">البريد مخصص للفرص فقط</button>
 
 <button onclick="insertFullMessage(`- الفرصة أُرسلت سابقًا ووُجِّهت للمسؤولة عن الإدخال.
 - الرجاء عدم تكرار إرسال الفرص التطوعية؛ لأن هذا الأمر يستهلك وقتًا وجهدًا من المسؤولة عن التوجيه في عملية البحث والمطابقة لتفادي عدم التكرار!
-وأي تعديلات فضلاً إرسالها للمنسقـ / ة في (قسم المسؤولية المجتمعية والعمل التطوعي).`)">
-أُرسلت سابقًا
-</button>
+وأي تعديلات فضلاً إرسالها للمنسقـ / ة في (قسم المسؤولية المجتمعية والعمل التطوعي).`)">أُرسلت سابقًا</button>
 
 <button onclick="insertFullMessage(`يبدو أن هذه الرسالة مُوجَّهة إلى إدارة أو قسم أو وحدة أخرى.
-نحن (قسم المسؤولية المجتمعية والعمل التطوعي).`)">
-موجهة لقسم آخر
-</button>
+نحن (قسم المسؤولية المجتمعية والعمل التطوعي).`)">موجهة لقسم آخر</button>
 
 <button onclick="insertFullMessage(`الفرصة وُجِّهت للمسؤول عن الإدخال ..
-الحقًا نأمل إرسال الفرصة بصيغة PDF إن أمكن.`)">
-إرسال PDF إن أمكن
-</button>
+الحقًا نأمل إرسال الفرصة بصيغة PDF إن أمكن.`)">إرسال PDF إن أمكن</button>
 
 <button onclick="insertFullMessage(`قسم المسؤولية المجتمعية والعمل التطوعي أعدَّ (نموذج تصميم الفرصة التطوعية) وهذا النموذج متوافق مع منصة العمل التطوعي؛ لذا نأمل تعبئة النموذج المُرفق بالفرصة التطوعية، كل فرصة مستقلة عن الأخرى.
-ويُشترط توقيع مدير/ة المدرسة والختم إن توفر.`)">
-نموذج القسم للفرص
-</button>
+ويُشترط توقيع مدير/ة المدرسة والختم إن توفر.`)">نموذج القسم للفرص</button>
 
 <button onclick="insertFullMessage(`فضلاً إرسال الموقع الجغرافي إلى البريد الخاص بمنسقـ/ة الفرصة في
-(قسم المسؤولية المجتمعية والعمل التطوعي).`)">
-إرسال الموقع
-</button>
+(قسم المسؤولية المجتمعية والعمل التطوعي).`)">إرسال الموقع</button>
 
 <button onclick="insertFullMessage(`فرص المدارس الأهلية للطلبة والطالبات تُرسل لـ (مكتب التعليم الخاص في إدارة التعليم) هو المسؤول عن إدراجها في منصة العمل التطوعي.
-أمَّا فرص المعلمين والمعلمات فتُرسل إلى هذا البريد ..`)">
-مدارس أهلية 1
-</button>
+أمَّا فرص المعلمين والمعلمات فتُرسل إلى هذا البريد ..`)">مدارس أهلية 1</button>
 
 <button onclick="insertFullMessage(`- فرص المدارس الأهلية للطلبة والطالبات تُرسل لـ (مكتب التعليم الخاص في إدارة التعليم) هو المسؤول عن إدراجها في منصة العمل التطوعي.
 - أمَّا فرص المعلمين والمعلمات فتُرسل إلى هذا البريد ..
-لذلك نأمل فرز فرص المعلمين والمعلمات في ملف خاص بها وإرسالها إلينا دونًا عن فرص الطالب والطالبات.`)">
-مدارس أهلية 2
-</button>
+لذلك نأمل فرز فرص المعلمين والمعلمات في ملف خاص بها وإرسالها إلينا دونًا عن فرص الطالب والطالبات.`)">مدارس أهلية 2</button>
 
-<button onclick="insertTemplateWithName(`الفرصة وُجِّهت للمسؤولة عن الإدخال، وأي تعديلات فضلاً إرسالها للمنسقة المتواصلة مع مدرستكم في (قسم المسؤولية المجتمعية والعمل التطوعي) أ. [الاسم].`)">
-توجيه + اسم المنسقة
-</button>
+<button onclick="insertTemplateWithName(`الفرصة وُجِّهت للمسؤولة عن الإدخال، وأي تعديلات فضلاً إرسالها للمنسقة المتواصلة مع مدرستكم في (قسم المسؤولية المجتمعية والعمل التطوعي) أ. [الاسم].`)">توجيه + اسم المنسقة</button>
 
-<button onclick="insertTemplateWithName(`أي تعديلات تُرسل إلى المنسقة أ. [الاسم].`)">
-إدراج الاسم بعد أ.
-</button>
+<button onclick="insertTemplateWithName(`أي تعديلات تُرسل إلى المنسقة أ. [الاسم].`)">إدراج الاسم بعد أ.</button>
+
+<button onclick="insertPlain(`نأمل تعبئة الخانات التالية:`)">تمهيد: الخانات التالية</button>
+
+<button onclick="insertPlain(`•• خانة اسم الجهة`)">خانة اسم الجهة</button>
+<button onclick="insertPlain(`•• خانة مشرف الفرصة`)">خانة مشرف الفرصة</button>
+<button onclick="insertPlain(`•• خانة منسق الفرصة`)">خانة منسق الفرصة</button>
+<button onclick="insertPlain(`•• خانة عدد المتطوعين`)">خانة عدد المتطوعين</button>
+<button onclick="insertPlain(`•• خانة العمر المناسب`)">خانة العمر المناسب</button>
+<button onclick="insertPlain(`•• خانة المهام المطلوبة`)">خانة المهام المطلوبة</button>
+<button onclick="insertPlain(`•• خانة طبيعة الفرصة ووقتها ص / م`)">خانة طبيعة الفرصة</button>
+<button onclick="insertPlain(`•• خانة عدد الساعات في اليوم`)">خانة عدد الساعات</button>
+<button onclick="insertPlain(`•• خانة موقع الفرصة التطوعية`)">خانة موقع الفرصة</button>
+<button onclick="insertPlain(`•• خانة الأيام المتاحة`)">خانة الأيام المتاحة</button>
+<button onclick="insertPlain(`•• خانة الإطار الزمني للفرصة - ميلادي`)">خانة الإطار الزمني</button>
 </div>
 </div>
 
 <div class="panel-group">
 <h2>الأسماء</h2>
 <div class="names-row">
-<button class="name-btn" onclick="setActiveName(this,'الجوهرة السحيم')">الجوهرة السحيم</button>
-<button class="name-btn" onclick="setActiveName(this,'منيرة الناصري')">منيرة الناصري</button>
-<button class="name-btn" onclick="setActiveName(this,'نورة البيشي')">نورة البيشي</button>
-<button class="name-btn" onclick="setActiveName(this,'شريفة الثمالي')">شريفة الثمالي</button>
-<button class="name-btn" onclick="setActiveName(this,'عهود حلواني')">عهود حلواني</button>
-<button class="name-btn" onclick="setActiveName(this,'بدرية الثمالي')">بدرية الثمالي</button>
-<button class="name-btn" onclick="setActiveName(this,'نايف الزهراني')">نايف الزهراني</button>
-<button class="name-btn" onclick="setActiveName(this,'منيرة عالي سرحان القرشي')">منيرة عالي سرحان القرشي</button>
+<button class="name-btn" onclick="setActiveName(this, 'الجوهرة السحيم')">الجوهرة السحيم</button>
+<button class="name-btn" onclick="setActiveName(this, 'منيرة الناصري')">منيرة الناصري</button>
+<button class="name-btn" onclick="setActiveName(this, 'نورة البيشي')">نورة البيشي</button>
+<button class="name-btn" onclick="setActiveName(this, 'شريفة الثمالي')">شريفة الثمالي</button>
+<button class="name-btn" onclick="setActiveName(this, 'عهود حلواني')">عهود حلواني</button>
+<button class="name-btn" onclick="setActiveName(this, 'بدرية الثمالي')">بدرية الثمالي</button>
+<button class="name-btn" onclick="setActiveName(this, 'نايف الزهراني')">نايف الزهراني</button>
+<button class="name-btn" onclick="setActiveName(this, 'منيرة عالي سرحان القرشي')">منيرة عالي سرحان القرشي</button>
 </div>
 <div class="note">اختاري الاسم أولًا، ثم اضغطي النص الذي يحتوي على [الاسم].</div>
 </div>
@@ -370,14 +305,15 @@ PNG, JPG, JPEG, مدعومة`)">
 <div class="panel-group">
 <h2>الافتتاحية</h2>
 <div class="button-grid">
-<button onclick="insertOpening()">السلام عليكم ورحمة الله وبركاته</button>
+<button onclick="insertPlain(`السلام عليكم ورحمة الله وبركاته`)">السلام عليكم ورحمة الله وبركاته</button>
 </div>
 </div>
 
 <div class="panel-group">
 <h2>الختام</h2>
 <div class="button-grid">
-<button onclick="insertClosing()">تحياتي<br>مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي</button>
+<button onclick="insertPlain(`تحياتي
+مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">تحياتي + التوقيع</button>
 </div>
 </div>
 
@@ -385,40 +321,24 @@ PNG, JPG, JPEG, مدعومة`)">
 
 <section class="output-panel">
 <div class="output-card">
-<strong>الرموز</strong>
-<div id="symbolsBox" class="symbols-box"></div>
-</div>
-
-<div class="output-card" style="flex:1; display:flex; flex-direction:column;">
 <strong>الرسالة</strong>
-<div id="editor" contenteditable="true"></div>
+<textarea id="box" spellcheck="false"></textarea>
 </div>
 </section>
 
 </main>
 
 <script>
-const openingHTML = '<div class="opening-line">السلام عليكم ورحمة الله وبركاته</div><div><br></div>';
-const closingHTML = '<div><br></div><div class="closing-block">تحياتي</div><div class="closing-block">مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي</div>';
 let activeName = '';
 
-function getEditor() {
-return document.getElementById('editor');
+function getBox() {
+return document.getElementById('box');
 }
 
-function getSymbolsBox() {
-return document.getElementById('symbolsBox');
-}
-
-function escapeHtml(text) {
-return text
-.replace(/&/g, '&amp;')
-.replace(/</g, '&lt;')
-.replace(/>/g, '&gt;');
-}
-
-function nlToHtml(text) {
-return escapeHtml(text).replace(/\n/g, '<br>');
+function setActiveName(button, name) {
+activeName = name;
+document.querySelectorAll('.name-btn').forEach(btn => btn.classList.remove('active'));
+button.classList.add('active');
 }
 
 function replaceName(text) {
@@ -430,89 +350,37 @@ return null;
 return text.replaceAll('[الاسم]', activeName);
 }
 
-function placeCursorBetweenOpeningAndClosing() {
-const editor = getEditor();
-editor.focus();
+function insertAtCursor(text) {
+const box = getBox();
+box.focus();
 
-const selection = window.getSelection();
-const range = document.createRange();
+const start = box.selectionStart;
+const end = box.selectionEnd;
+const before = box.value.substring(0, start);
+const after = box.value.substring(end);
 
-if (editor.childNodes.length >= 2) {
-const targetNode = editor.childNodes[1];
-range.setStartBefore(targetNode);
-range.collapse(true);
-} else {
-range.selectNodeContents(editor);
-range.collapse(false);
+box.value = before + text + after;
+
+const cursor = start + text.length;
+box.setSelectionRange(cursor, cursor);
 }
 
-selection.removeAllRanges();
-selection.addRange(range);
-}
-
-function newMessage() {
-const editor = getEditor();
-editor.innerHTML = openingHTML + closingHTML;
-placeCursorBetweenOpeningAndClosing();
-}
-
-function clearMiddle() {
-newMessage();
-}
-
-function insertOpening() {
-insertHtmlAtCursor(openingHTML);
-}
-
-function insertClosing() {
-insertHtmlAtCursor(closingHTML);
-}
-
-function insertHtmlAtCursor(html) {
-const editor = getEditor();
-editor.focus();
-
-const selection = window.getSelection();
-if (!selection.rangeCount) {
-editor.innerHTML += html;
-return;
-}
-
-const range = selection.getRangeAt(0);
-range.deleteContents();
-
-const temp = document.createElement('div');
-temp.innerHTML = html;
-
-const fragment = document.createDocumentFragment();
-let node;
-let lastNode = null;
-
-while ((node = temp.firstChild)) {
-lastNode = fragment.appendChild(node);
-}
-
-range.insertNode(fragment);
-
-if (lastNode) {
-range.setStartAfter(lastNode);
-range.collapse(true);
-selection.removeAllRanges();
-selection.addRange(range);
-}
-}
-
-function insertPlainTextAtCursor(text) {
-insertHtmlAtCursor('<div>' + nlToHtml(text) + '</div>');
+function insertPlain(text) {
+insertAtCursor(text + '\n');
 }
 
 function insertFullMessage(middleText) {
-const editor = getEditor();
-editor.innerHTML =
-openingHTML +
-'<div>' + nlToHtml(middleText) + '</div>' +
-closingHTML;
-placeCursorAtEnd();
+const fullText =
+`السلام عليكم ورحمة الله وبركاته
+
+${middleText}
+
+تحياتي
+مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`;
+getBox().value = fullText;
+getBox().focus();
+const pos = fullText.length;
+getBox().setSelectionRange(pos, pos);
 }
 
 function insertTemplateWithName(text) {
@@ -521,58 +389,30 @@ if (finalText === null) return;
 insertFullMessage(finalText);
 }
 
-function placeCursorAtEnd() {
-const editor = getEditor();
-editor.focus();
-const selection = window.getSelection();
-const range = document.createRange();
-range.selectNodeContents(editor);
-range.collapse(false);
-selection.removeAllRanges();
-selection.addRange(range);
-}
-
-function addSymbol(symbol) {
-getSymbolsBox().textContent += symbol;
-}
-
-function clearSymbols() {
-getSymbolsBox().textContent = '';
-}
-
-function setActiveName(button, name) {
-activeName = name;
-document.querySelectorAll('.name-btn').forEach(btn => btn.classList.remove('active'));
-button.classList.add('active');
+function clearEditor() {
+getBox().value = '';
+getBox().focus();
 }
 
 function removeLastLine() {
-const editor = getEditor();
-let text = editor.innerText.replace(/\n+$/g, '');
-let lines = text.split('\n');
+const box = getBox();
+let lines = box.value.replace(/\n+$/g, '').split('\n');
 lines.pop();
-editor.innerText = lines.join('\n');
-placeCursorAtEnd();
+box.value = lines.join('\n');
+if (box.value.trim() !== '') {
+box.value += '\n';
+}
+box.focus();
+const pos = box.value.length;
+box.setSelectionRange(pos, pos);
 }
 
-function copyFullMessage() {
-const symbols = getSymbolsBox().textContent.trim();
-const body = getEditor().innerText.trim();
-
-let fullText = '';
-if (symbols) {
-fullText += symbols + '\n\n';
-}
-if (body) {
-fullText += body;
-}
-
-navigator.clipboard.writeText(fullText)
-.then(() => alert('تم نسخ الرسالة كاملة'))
+function copyAll() {
+const box = getBox();
+navigator.clipboard.writeText(box.value)
+.then(() => alert('تم النسخ'))
 .catch(() => alert('تعذر النسخ، انسخي يدويًا'));
 }
-
-newMessage();
 </script>
 
 </body>
