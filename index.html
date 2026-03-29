@@ -1,316 +1,192 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>بُصر - محرر الردود</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>محرر الردود</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      direction: rtl;
-      color: #222;
-    }
+<style>
+body {font-family: Arial; margin:0; background:#f5f5f5;}
+.container {display:flex; height:100vh;}
+.left {width:45%; background:#fff; padding:15px; overflow:auto;}
+.right {width:55%; padding:15px;}
 
-    .topbar {
-      background: #fff;
-      border-bottom: 1px solid #ddd;
-      padding: 12px 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-    }
+h3 {margin-top:20px;}
 
-    .topbar h1 {
-      margin: 0;
-      font-size: 24px;
-    }
+button {
+margin:4px;
+padding:6px 10px;
+cursor:pointer;
+border-radius:6px;
+border:1px solid #ccc;
+background:#fafafa;
+}
 
-    .top-actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
+button:hover {background:#eee;}
 
-    .top-actions button {
-      padding: 8px 12px;
-      border: none;
-      background: #4caf50;
-      color: #fff;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 14px;
-    }
+.symbols button {font-weight:bold;}
 
-    .top-actions button:hover {
-      background: #3f9843;
-    }
+textarea {
+width:100%;
+height:500px;
+font-size:16px;
+padding:10px;
+border-radius:8px;
+border:1px solid #ccc;
+}
 
-    .layout {
-      display: flex;
-      min-height: calc(100vh - 62px);
-    }
+.top {
+display:flex;
+gap:8px;
+margin-bottom:10px;
+}
 
-    .builder-panel {
-      width: 46%;
-      background: #fff;
-      border-left: 1px solid #ddd;
-      padding: 16px;
-      box-sizing: border-box;
-    }
+.top button {
+background:#4caf50;
+color:#fff;
+border:none;
+}
 
-    .output-panel {
-      width: 54%;
-      padding: 16px;
-      box-sizing: border-box;
-    }
+.active {background:#4caf50 !important; color:#fff;}
 
-    .panel-group {
-      margin-bottom: 22px;
-    }
-
-    .panel-group h2 {
-      margin: 0 0 10px;
-      font-size: 18px;
-      border-bottom: 1px solid #ddd;
-      padding-bottom: 6px;
-    }
-
-    .button-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .button-grid button {
-      padding: 8px 10px;
-      border: 1px solid #ccc;
-      background: #fafafa;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 14px;
-      line-height: 1.4;
-    }
-
-    .button-grid button:hover {
-      background: #eee;
-    }
-
-    .symbols-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .symbol-btn {
-      min-width: 42px;
-      padding: 8px 10px;
-      border: 1px solid #ccc;
-      background: #fafafa;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 15px;
-      font-weight: bold;
-    }
-
-    .symbol-btn:hover {
-      background: #eee;
-    }
-
-    .output-card {
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 12px;
-      box-sizing: border-box;
-    }
-
-    .output-card strong {
-      display: block;
-      margin-bottom: 10px;
-      font-size: 20px;
-    }
-
-    textarea {
-      width: 100%;
-      min-height: 520px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 12px;
-      resize: vertical;
-      font-size: 18px;
-      line-height: 1.8;
-      box-sizing: border-box;
-      direction: rtl;
-      font-family: Arial, sans-serif;
-    }
-
-    .note {
-      font-size: 13px;
-      color: #666;
-      margin-top: 6px;
-    }
-
-    @media (max-width: 900px) {
-      .layout {
-        flex-direction: column;
-      }
-
-      .builder-panel,
-      .output-panel {
-        width: 100%;
-      }
-
-      textarea {
-        min-height: 320px;
-      }
-    }
-  </style>
+.note {font-size:12px; color:#777;}
+</style>
 </head>
+
 <body>
 
-  <header class="topbar">
-    <h1>بُصر - محرر الردود</h1>
+<div class="top">
+<button onclick="copyAll()">نسخ</button>
+<button onclick="newMsg()">رسالة جديدة</button>
+<button onclick="clearMiddle()">مسح المتن</button>
+<button onclick="removeLast()">حذف آخر سطر</button>
+</div>
 
-    <div class="top-actions">
-      <button onclick="copyAll()">نسخ الكل</button>
-      <button onclick="clearAll()">تفريغ</button>
-      <button onclick="removeLastLine()">حذف آخر سطر</button>
-    </div>
-  </header>
+<div class="container">
 
-  <main class="layout">
+<div class="left">
 
-    <section class="builder-panel">
+<h3>الرموز</h3>
+<div class="symbols">
+<button title="فاصل" onclick="addSymbol('/')">/</button>
+<button title="بدون توقيع" onclick="addSymbol('●')">●</button>
+<button title="نقص معلومة" onclick="addSymbol('●●')">●●</button>
+<button title="لا يوجد مرفق" onclick="addSymbol('●●●')">●●●</button>
+<button title="خطأ" onclick="addSymbol('@')">@</button>
+<button title="الفرص فقط" onclick="addSymbol('#')">#</button>
+<button onclick="addSymbol('&&&&')">&&&&</button>
+<button onclick="addSymbol('%%%')">%%%</button>
+<button onclick="addSymbol('PDF')">PDF</button>
+<button onclick="addSymbol('^^^')">^^^</button>
+<button onclick="addSymbol('~~~')">~~~</button>
+<button onclick="addSymbol('∞')">∞</button>
+<button onclick="addSymbol('>>>')">&gt;&gt;&gt;</button>
+</div>
+<div class="note">عند تمرير المؤشر على الرمز يظهر ما يشير إليه.</div>
 
-      <div class="panel-group">
-        <h2>الرموز</h2>
+<h3>الأسماء</h3>
+<div>
+<button onclick="setName(this,'الجوهرة السحيم')">الجوهرة السحيم</button>
+<button onclick="setName(this,'منيرة الناصري')">منيرة الناصري</button>
+<button onclick="setName(this,'نورة البيشي')">نورة البيشي</button>
+<button onclick="setName(this,'شريفة الثمالي')">شريفة الثمالي</button>
+<button onclick="setName(this,'عهود حلواني')">عهود حلواني</button>
+<button onclick="setName(this,'بدرية الثمالي')">بدرية الثمالي</button>
+<button onclick="setName(this,'نايف الزهراني')">نايف الزهراني</button>
+<button onclick="setName(this,'منيرة عالي سرحان القرشي')">منيرة عالي سرحان القرشي</button>
+</div>
 
-        <div class="symbols-row">
-          <button class="symbol-btn" title="فاصل بين رمز ورمز" onclick="addText('/')">/</button>
-          <button class="symbol-btn" title="عدم وجود توقيع أو ختم" onclick="addText('●')">●</button>
-          <button class="symbol-btn" title="نقص معلومة مهمة" onclick="addText('●●')">●●</button>
-          <button class="symbol-btn" title="عدم وجود مرفق أو صيغة المرفق لا تعمل" onclick="addText('●●●')">●●●</button>
-          <button class="symbol-btn" title="رسالة وصلت بالخطأ" onclick="addText('@')">@</button>
-          <button class="symbol-btn" title="هذا البريد مخصص لنماذج الفرص التطوعية فقط" onclick="addText('#')">#</button>
-          <button class="symbol-btn" title="أُرسلت سابقًا" onclick="addText('&&&&')">&&&&</button>
-          <button class="symbol-btn" title="فرص المدارس الأهلية" onclick="addText('%%%')">%%%</button>
-          <button class="symbol-btn" title="صيغة PDF" onclick="addText('PDF')">PDF</button>
-          <button class="symbol-btn" title="المرفق بصيغة غير مناسبة أو المطلوب PDF" onclick="addText('^^^')">^^^</button>
-          <button class="symbol-btn" title="إضافة عنوان البريد في جهات الاتصال" onclick="addText('~~~')">~~~</button>
-          <button class="symbol-btn" title="إرسال الموقع الجغرافي للمنسقة" onclick="addText('∞')">∞</button>
-          <button class="symbol-btn" title="تصويب معلومة" onclick="addText('>>>')">&gt;&gt;&gt;</button>
-        </div>
+<h3>نصوص جاهزة</h3>
 
-        <div class="note">مرري المؤشر على الرمز لقراءة معناه، واضغطيه لإدراجه في النص.</div>
-      </div>
+<button onclick="addText(`فضلاً ختم الفرصة التطوعية، أو إدراج توقيع مدير/ ة المدرسة في حال عدم توفر ختم.`)">
+ختم أو توقيع</button>
 
-      <div class="panel-group">
-        <h2>بداية الرد</h2>
-        <div class="button-grid">
-          <button onclick="addText('السلام عليكم ورحمة الله وبركاته')">السلام عليكم ورحمة الله وبركاته</button>
-        </div>
-      </div>
+<button onclick="addText(`النموذج مُعبأ بخط اليد، نأمل تعبئته إلكترونيًّا وإعادة إرساله.`)">
+تعبئة إلكترونيًا</button>
 
-      <div class="panel-group">
-        <h2>عبارات عامة</h2>
-        <div class="button-grid">
-          <button onclick="addText('نأمل إدراج ختم المدرسة أو توقيع مدير/ة المدرسة.')">نأمل إدراج ختم المدرسة أو توقيع مدير/ة المدرسة</button>
-          <button onclick="addText('نأمل تعبئة الخانات الناقصة.')">نأمل تعبئة الخانات الناقصة</button>
-          <button onclick="addText('الخانة الناقصة:')">الخانة الناقصة:</button>
-          <button onclick="addText('الخانات الناقصة:')">الخانات الناقصة:</button>
-          <button onclick="addText('يبدو أن هذه الرسالة موجهة إلى قسم آخر.')">يبدو أن هذه الرسالة موجهة إلى قسم آخر</button>
-          <button onclick="addText('هذا البريد مخصص لنماذج الفرص التطوعية فقط.')">هذا البريد مخصص لنماذج الفرص التطوعية فقط</button>
-          <button onclick="addText('الرجاء عدم تكرار إرسال الفرص التطوعية.')">الرجاء عدم تكرار إرسال الفرص التطوعية</button>
-          <button onclick="addText('نأمل إرسال النموذج بصيغة PDF.')">نأمل إرسال النموذج بصيغة PDF</button>
-          <button onclick="addText('الرسالة لا تحتوي على مرفقات.')">الرسالة لا تحتوي على مرفقات</button>
-          <button onclick="addText('المرفق غير واضح.')">المرفق غير واضح</button>
-          <button onclick="addText('الملف المرفق لا يعمل.')">الملف المرفق لا يعمل</button>
-          <button onclick="addText('نأمل تعبئة النموذج إلكترونيًا إن أمكن.')">نأمل تعبئة النموذج إلكترونيًا إن أمكن</button>
-          <button onclick="addText('الفرصة وُجّهت للمسؤولة عن الإدخال.')">الفرصة وُجّهت للمسؤولة عن الإدخال</button>
-          <button onclick="addText('أي تعديلات تُرسل إلى المنسقة المتواصلة مع مدرستكم.')">أي تعديلات تُرسل إلى المنسقة المتواصلة مع مدرستكم</button>
-        </div>
-      </div>
+<button onclick="addText(`يبدو أن هذه الرسالة مُوجَّهة إلى قسم آخر.`)">
+موجهة لقسم آخر</button>
 
-      <div class="panel-group">
-        <h2>الخانات الناقصة</h2>
-        <div class="button-grid">
-          <button onclick="addText('- خانة اسم الجهة بكتابة اسم المدرسة')">اسم الجهة</button>
-          <button onclick="addText('- خانة مشرف الفرصة بكتابة اسم المنسق/ة في المدرسة ورقم الجوال')">مشرف الفرصة</button>
-          <button onclick="addText('- خانة منسق الفرصة بكتابة اسم المنسق/ة في قسم المسؤولية المجتمعية والعمل التطوعي')">منسق الفرصة</button>
-          <button onclick="addText('- خانة عدد المتطوعين بكتابة العدد')">عدد المتطوعين</button>
-          <button onclick="addText('- خانة العمر المناسب للمتطوعين باختيار العمر')">العمر المناسب</button>
-          <button onclick="addText('- خانة المهام المطلوبة من المتطوع بكتابة 3 مهام كحد أدنى')">المهام المطلوبة</button>
-          <button onclick="addText('- خانة طبيعة الفرصة ووقتها ص / م')">طبيعة الفرصة</button>
-          <button onclick="addText('- خانة عدد الساعات في اليوم')">عدد الساعات</button>
-          <button onclick="addText('- خانة موقع الفرصة التطوعية')">موقع الفرصة</button>
-          <button onclick="addText('- خانة الأيام المتاحة للفرصة')">الأيام المتاحة</button>
-          <button onclick="addText('- خانة الإطار الزمني للفرصة - ميلادي')">الإطار الزمني</button>
-        </div>
-      </div>
+<button onclick="addText(`هذا البريد مُخصص لنماذج الفرص التطوعية فقط.`)">
+البريد مخصص</button>
 
-      <div class="panel-group">
-        <h2>الختام</h2>
-        <div class="button-grid">
-          <button onclick="addText('تحياتي')">تحياتي</button>
-          <button onclick="addText('مسؤولة بريد الفرص التطوعية:')">مسؤولة بريد الفرص التطوعية:</button>
-          <button onclick="addText('منسقة الفرص التطوعية')">منسقة الفرص التطوعية</button>
-        </div>
-      </div>
+<button onclick="addText(`الرسالة لا تحتوي على مرفقات.`)">
+لا يوجد مرفق</button>
 
-    </section>
+<button onclick="addText(`المرفق غير واضح.`)">
+المرفق غير واضح</button>
 
-    <section class="output-panel">
-      <div class="output-card">
-        <strong>الناتج</strong>
-        <textarea id="replyBox" placeholder="سيظهر النص هنا..."></textarea>
-      </div>
-    </section>
+<button onclick="addText(`نأمل إرسال النموذج بصيغة PDF إن أمكن.`)">
+PDF إن أمكن</button>
 
-  </main>
+<button onclick="addText(`أي تعديلات تُرسل إلى المنسقة أ. [الاسم].`)">
+إدراج اسم</button>
 
-  <script>
-    function addText(text) {
-      const box = document.getElementById('replyBox');
-      box.value += text + "\n";
-    }
+<h3>الخانات التالية</h3>
 
-    function clearAll() {
-      document.getElementById('replyBox').value = '';
-    }
+<button onclick="addText(`•• خانة عدد المتطوعين`)">عدد المتطوعين</button>
+<button onclick="addText(`•• خانة المهام المطلوبة`)">المهام</button>
+<button onclick="addText(`•• خانة اسم الجهة`)">اسم الجهة</button>
+<button onclick="addText(`•• خانة موقع الفرصة التطوعية`)">الموقع</button>
+<button onclick="addText(`•• خانة الأيام المتاحة`)">الأيام</button>
 
-    function removeLastLine() {
-      const box = document.getElementById('replyBox');
-      let lines = box.value.split('\n');
+</div>
 
-      while (lines.length && lines[lines.length - 1] === '') {
-        lines.pop();
-      }
+<div class="right">
 
-      lines.pop();
-      box.value = lines.join('\n');
+<div id="symbolsBox"></div>
 
-      if (box.value.trim() !== '') {
-        box.value += '\n';
-      }
-    }
+<textarea id="box"></textarea>
 
-  function copyAll() {
-  const box = document.getElementById('replyBox');
+</div>
 
-  navigator.clipboard.writeText(box.value)
-    .then(() => {
-      alert('تم نسخ النص');
-    })
-    .catch(() => {
-      alert('تعذر النسخ، انسخي يدويًا');
-    });
+</div>
+
+<script>
+
+let name="";
+
+function setName(btn,n){
+name=n;
+document.querySelectorAll("button").forEach(b=>b.classList.remove("active"));
+btn.classList.add("active");
 }
-  </script>
+
+function addSymbol(s){
+document.getElementById("symbolsBox").innerText+=s;
+}
+
+function addText(t){
+if(t.includes("[الاسم]")){
+if(!name){alert("اختاري الاسم");return;}
+t=t.replace("[الاسم]",name);
+}
+document.getElementById("box").value+=t+"\n";
+}
+
+function newMsg(){
+document.getElementById("box").value=
+"السلام عليكم ورحمة الله وبركاته\n\n\nتحياتي\nمسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي";
+}
+
+function clearMiddle(){
+newMsg();
+}
+
+function removeLast(){
+let v=document.getElementById("box").value.split("\n");
+v.pop();
+document.getElementById("box").value=v.join("\n");
+}
+
+function copyAll(){
+let s=document.getElementById("symbolsBox").innerText;
+let b=document.getElementById("box").value;
+navigator.clipboard.writeText(s+"\n\n"+b);
+alert("تم النسخ");
+}
+
+</script>
 
 </body>
 </html>
