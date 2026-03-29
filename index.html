@@ -299,13 +299,17 @@
       }
     }
 
-    function copyAll() {
-      const box = document.getElementById('replyBox');
-      box.select();
-      box.setSelectionRange(0, 99999);
-      document.execCommand('copy');
+  function copyAll() {
+  const box = document.getElementById('replyBox');
+
+  navigator.clipboard.writeText(box.value)
+    .then(() => {
       alert('تم نسخ النص');
-    }
+    })
+    .catch(() => {
+      alert('تعذر النسخ، انسخي يدويًا');
+    });
+}
   </script>
 
 </body>
