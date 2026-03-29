@@ -2,12 +2,72 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>بُصر - محرر الردود</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-  <h1>بُصر - محرر الردود</h1>
-  <p>بداية الموقع تمت بنجاح</p>
+
+  <header class="topbar">
+    <h1>بُصر - محرر الردود</h1>
+    <div class="top-actions">
+      <button>نسخ الكل</button>
+      <button>تفريغ</button>
+    </div>
+  </header>
+
+  <main class="layout">
+
+    <!-- يمين: العبارات -->
+    <section class="builder-panel">
+
+      <div class="panel-group">
+        <h2>الرموز</h2>
+        <div class="button-grid">
+          <button>🔴</button>
+          <button>🟡</button>
+          <button>🟢</button>
+        </div>
+      </div>
+
+      <div class="panel-group">
+        <h2>بداية الرد</h2>
+        <div class="button-grid">
+          <button>السلام عليكم ورحمة الله وبركاته</button>
+        </div>
+      </div>
+
+      <div class="panel-group">
+        <h2>نواقص</h2>
+        <div class="button-grid">
+          <button>نأمل إدراج ختم المدرسة</button>
+          <button>نأمل تعبئة الخانات الناقصة</button>
+        </div>
+      </div>
+
+      <div class="panel-group">
+        <h2>ختام</h2>
+        <div class="button-grid">
+          <button>تحياتي</button>
+          <button>منسقة الفرص التطوعية</button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- يسار: الناتج -->
+    <section class="output-panel">
+
+      <div class="output-card">
+        <div class="output-header">
+          <strong>الناتج</strong>
+        </div>
+        <textarea placeholder="سيظهر النص هنا..."></textarea>
+      </div>
+
+    </section>
+
+  </main>
+
 </body>
 </html>
