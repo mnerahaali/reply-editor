@@ -69,6 +69,13 @@ cursor: pointer;
 background: green;
 color: white;
 }
+
+.sub-title {
+margin-top: 10px;
+margin-bottom: 4px;
+font-size: 14px;
+color: #555;
+}
 </style>
 </head>
 
@@ -92,6 +99,8 @@ color: white;
 <button class="small" onclick="setName(this,'نورة البيشي')">نورة</button>
 <button class="small" onclick="setName(this,'الجوهرة السحيم')">الجوهرة</button>
 <button class="small" onclick="setName(this,'شريفة الثمالي')">شريفة</button>
+<button class="small" onclick="setName(this,'نايف الزهراني')">نايف</button>
+<button class="small" onclick="setName(this,'بدرية الثمالي')">بدرية</button>
 
 <hr>
 
@@ -156,6 +165,31 @@ PDF
 
 <h3>الخانات</h3>
 
+<div class="sub-title">قبل أزرار الخانات</div>
+
+<button class="small" onclick="setMsg(`السلام عليكم ورحمة الله وبركاته
+
+الفرصة وُجِّهت للمسؤولة عن الإدخال أ. [الاسم] وأي تعديلات فضلًا إرسالها للمنسقة المُتواصلة مع مدرستكم في ( قسم المسؤولية المجتمعية والعمل التطوعي ) أ. [الاسم]
+
+الملاحظات:
+
+
+تحياتي
+مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">
+تمهيد الملاحظات
+</button>
+
+<button class="small" onclick="setMsg(`السلام عليكم ورحمة الله وبركاته
+
+نأمل إعادة إرسال الفرصة بعد تعديل الخانة التالية / الخانات التالية:
+
+تحياتي
+مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">
+تمهيد إعادة إرسال الفرصة
+</button>
+
+<div class="sub-title">الخانات</div>
+
 <button class="small" onclick="addField('اسم الجهة')">اسم الجهة</button>
 <button class="small" onclick="addField('مشرف الفرصة')">مشرف</button>
 <button class="small" onclick="addField('منسق الفرصة')">منسق</button>
@@ -196,7 +230,6 @@ fields.push(field);
 }
 
 function smartMessage() {
-
 let msg = "السلام عليكم ورحمة الله وبركاته\n\n";
 msg += "نأمل تعبئة الخانات التالية:\n";
 
