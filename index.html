@@ -18,19 +18,19 @@ color: #222;
 }
 
 .topbar {
-background: white;
-padding: 12px 16px;
+background: #fff;
+border-bottom: 1px solid #ddd;
+padding: 14px 18px;
 display: flex;
 justify-content: space-between;
 align-items: center;
-border-bottom: 1px solid #ddd;
 gap: 10px;
 flex-wrap: wrap;
 }
 
-.topbar-title {
+.topbar h1 {
+margin: 0;
 font-size: 24px;
-font-weight: bold;
 }
 
 .top-actions {
@@ -40,37 +40,43 @@ flex-wrap: wrap;
 }
 
 .top-actions button {
-padding: 8px 12px;
+padding: 8px 14px;
 border: none;
-background: green;
-color: white;
-border-radius: 6px;
+background: #188c2f;
+color: #fff;
+border-radius: 8px;
 cursor: pointer;
 font-size: 14px;
 width: auto;
 }
 
+.top-actions button:hover {
+background: #146f26;
+}
+
 .layout {
 display: flex;
-flex-direction: row;
+flex-direction: row-reverse;
 min-height: calc(100vh - 70px);
 }
 
 .panel {
 width: 42%;
-background: white;
-padding: 12px;
-overflow-y: auto;
+background: #fff;
 border-left: 1px solid #ddd;
+padding: 16px;
+overflow-y: auto;
 }
 
 .output {
 width: 58%;
-padding: 12px;
+padding: 16px;
+display: flex;
+flex-direction: column;
 }
 
 .section {
-margin-bottom: 22px;
+margin-bottom: 24px;
 }
 
 .section h3 {
@@ -81,9 +87,9 @@ padding-bottom: 6px;
 }
 
 .sub-title {
-margin: 10px 0 6px;
 font-size: 14px;
-color: #555;
+color: #666;
+margin: 10px 0 6px;
 }
 
 .button-grid,
@@ -91,6 +97,7 @@ color: #555;
 display: flex;
 flex-wrap: wrap;
 gap: 8px;
+align-items: center;
 }
 
 .small {
@@ -101,6 +108,7 @@ cursor: pointer;
 background: #fafafa;
 width: auto;
 font-size: 14px;
+line-height: 1.5;
 }
 
 .small:hover {
@@ -108,8 +116,9 @@ background: #eee;
 }
 
 .active {
-background: green !important;
+background: #188c2f !important;
 color: white;
+border-color: #188c2f;
 }
 
 .output-card {
@@ -118,6 +127,8 @@ border: 1px solid #ddd;
 border-radius: 10px;
 padding: 12px;
 min-height: 85vh;
+display: flex;
+flex-direction: column;
 }
 
 .output-card-title {
@@ -140,8 +151,8 @@ outline: none;
 }
 
 .green-line {
-color: green;
-font-weight: bold;
+color: #1f7a1f;
+font-weight: 700;
 }
 
 .note {
@@ -173,7 +184,7 @@ min-height: 420px;
 <body>
 
 <div class="topbar">
-<div class="topbar-title">بُصر - محرر الردود</div>
+<h1>بُصر - محرر الردود</h1>
 
 <div class="top-actions">
 <button onclick="copyAll()">نسخ</button>
@@ -202,8 +213,21 @@ min-height: 420px;
 </div>
 
 <div class="section">
+<h3>الافتتاحية</h3>
+<div class="button-grid">
+<button class="small" onclick="insertOpening()">السلام عليكم ورحمة الله وبركاته</button>
+</div>
+</div>
+
+<div class="section">
 <h3>الرسائل</h3>
 <div class="button-grid">
+
+<button class="small" onclick="setFullMessage(`● السلام عليكم ورحمة الله وبركاته
+فضلًا ختم الفرصة التطوعية، أو إدراج توقيع مدير/ ة المدرسة في حال عدم توفر ختم.
+
+تحياتي
+مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">ختم أو توقيع</button>
 
 <button class="small" onclick="setFullMessage(`*** السلام عليكم ورحمة الله وبركاته
 الفرصة وُجِّهت للمسؤولة عن الإدخال أ. [الاسم]
@@ -212,6 +236,44 @@ min-height: 420px;
 
 تحياتي
 مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">خط اليد</button>
+
+<button class="small" onclick="setFullMessage(`*** السلام عليكم ورحمة الله وبركاته
+النموذج مُعبأ بخط اليد، نأمل تعبئته إلكترونيًّا وإعادة إرساله.
+
+تحياتي
+مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">تعبئة إلكترونيًّا</button>
+
+<button class="small" onclick="setFullMessage(`●●● السلام عليكم ورحمة الله وبركاته
+الرسالة لا تحتوي على مرفقات
+
+إن كانت فرصة تطوعية فضلًا إرفاقها من جديد بصيغة PDF على هذا البريد.
+
+وإن كانت كُشوف وشواهد على تنفيذ الفرصة فتُوجَّه إلى بريد منسقـ / ة الفرصة في (قسم المسؤولية المجتمعية والعمل التطوعي).
+
+تحياتي
+مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">لا توجد مرفقات</button>
+
+<button class="small" onclick="setFullMessage(`●●● السلام عليكم ورحمة الله وبركاته
+المرفق غير واضح.
+
+نأمل إعادة تصويره من جديد بدقة أفضل، وإعادة إرفاقه.
+
+نأمل إعادة إدراجه من جديد وحفظه بصيغة PDF وإرفاقه في البريد.
+
+لاحقًا نأمل إرسال الفرص بصيغة PDF إن أمكن.
+
+وإن تعذّر ذلك فنأمل تصويرها بقياسات أفضل وبدقة أعلى.
+
+تحياتي
+مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">المرفق غير واضح</button>
+
+<button class="small" onclick="setFullMessage(`●●● السلام عليكم ورحمة الله وبركاته
+الملف المُرفق تعذَّرت مُعاينتُه فضلًا إعادة إرفاقه بصيغة PDF إن أمكن.
+
+وإن تعذَّر ذلك فنأمل إرساله بإحدى الصيغ التالية: PNG, JPG, JPEG.
+
+تحياتي
+مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">تعذرت مُعاينته</button>
 
 <button class="small" onclick="setFullMessage(`●^● السلام عليكم ورحمة الله وبركاته
 المُرفَق صُوِّر بلقطة شاشة لأن الصيغة المُرسلة غير مدعومة.
@@ -222,6 +284,32 @@ PNG, JPG, JPEG,
 تحياتي
 مسؤولة بريد الفرص التطوعية: منيرة القرشي`)">لقطة شاشة</button>
 
+<button class="small" onclick="setFullMessage(`# السلام عليكم ورحمة الله وبركاته
+هذا البريد مُخصَّص لنماذج الفرص التطوعية فقط.
+
+فضلًا إرسال كُشوف وشواهد الفرص التطوعية (الصور دون الفيديو) إلى البريد الخاص بمنسقـ/ة الفرصة في (قسم المسؤولية المجتمعية والعمل التطوعي).
+
+تحياتي
+مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">البريد مخصص للفرص فقط</button>
+
+<button class="small" onclick="setFullMessage(`&&&& السلام عليكم ورحمة الله وبركاته
+الفرصة أُرسِلت سابقًا ووُجِّهت للمسؤولة عن الإدخال أ. [الاسم]
+
+الرجاء عدم تكرار إرسال الفرص التطوعية؛ لأن هذا الأمر يستهلك وقتًا وجُهدًا من المسؤولة عن التوجيه في عملية البحث والمطابقة لتفادي عدم التكرار!
+
+وأي تعديلات فضلًا إرسالها للمنسقـ / ة في (قسم المسؤولية المجتمعية والعمل التطوعي).
+
+تحياتي
+مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">أُرسلت سابقًا</button>
+
+<button class="small" onclick="setFullMessage(`@ السلام عليكم ورحمة الله وبركاته
+يبدو أن هذه الرسالة مُوجَّهة إلى إدارة أو قسم أو وحدة أخرى.
+
+نحنُ (قسم المسؤولية المجتمعية والعمل التطوعي).
+
+تحياتي
+مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">موجهة لقسم آخر</button>
+
 <button class="small" onclick="setFullMessage(`^^^ السلام عليكم ورحمة الله وبركاته
 الفرصة وُجِّهت للمسؤولة عن الإدخال أ. [الاسم]
 
@@ -230,11 +318,36 @@ PNG, JPG, JPEG,
 تحياتي
 مسؤولة بريد الفرص التطوعية: منيرة القرشي`)">PDF</button>
 
+<button class="small" onclick="setFullMessage(`%●% السلام عليكم ورحمة الله وبركاته
+قسم المسؤولية المجتمعية والعمل التطوعي أعدَّ (نموذج تصميم الفرصة التطوعية) وهذا النموذج مُتوافق مع منصة العمل التطوعي؛ لذا نأمل تعبئة النموذج المُرفق بالفرصة التطوعية، كل فرصة مُستقلة عن الأخرى. ويُشترط توقيع مدير/ة المدرسة والختم إن توفر.
+
+تحياتي
+مسؤولة بريد الفرص التطوعية: منيرة القرشي`)">نموذج القسم للفرص</button>
+
 <button class="small" onclick="setFullMessage(`∞ السلام عليكم ورحمة الله وبركاته
-فضلًا إرسال الموقع الجغرافي إلى البريد الخاص بمنسق/ة الفرصة أ. [الاسم]
+فضلًا إرسال الموقع الجغرافي إلى البريد الخاص بمنسقـ/ة الفرصة في (قسم المسؤولية المجتمعية والعمل التطوعي) أ. [الاسم]
 
 تحياتي
 مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">الموقع</button>
+
+<button class="small" onclick="setFullMessage(`%%% السلام عليكم ورحمة الله وبركاته
+فرص المدارس الأهلية للطلبة والطالبات تُرسل لـ (مكتب التعليم الخاص في إدارة التعليم) هو المسؤول عن إدراجها في منصة العمل التطوعي.
+
+أمَّا فرص المعلمين والمعلمات فتُرسل إلى هذا البريد ..
+
+تحياتي
+
+مسؤولة بريد الفرص التطوعيَّة: منيرة القرشي`)">مدارس أهلية 1</button>
+
+<button class="small" onclick="setFullMessage(`%%% السلام عليكم ورحمة الله وبركاته
+فرص المدارس الأهلية للطلبة والطالبات تُرسل لـ (مكتب التعليم الخاص في إدارة التعليم) هو المسؤول عن إدراجها في منصة العمل التطوعي.
+
+أمَّا فرص المعلمين والمعلمات فتُرسل إلى هذا البريد ..
+
+لذلك نأمل فرز فرص المعلمين والمعلمات في ملف خاص بها وإرسالها إلينا دُونًا عن فرص الطلاب والطالبات.
+
+تحياتي:
+مسؤولة بريد الفرص التطوعيَّة: منيرة القرشي`)">مدارس أهلية 2</button>
 
 <button class="small" onclick="setFullMessage(`~~~ السَّلام عليكم ورحمة الله وبركاته
 حرصًا على ضمان وصول (نماذج الفرص التَّطوعية) إلى بريد قسم المسؤولية المجتمعية والعمل التطوعي دون أن تُصنَّف كرسائل Spam، نأمل منكم إضافة البريد الإلكتروني للقسم taifedugov@gmail.com في دفتر العناوين الخاص بحسابكم على Gmail.
@@ -255,20 +368,6 @@ PNG, JPG, JPEG,
 
 تحياتي
 مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">التقرير</button>
-
-<button class="small" onclick="setFullMessage(`● السلام عليكم ورحمة الله وبركاته
-فضلًا ختم الفرصة التطوعية، أو إدراج توقيع مدير/ ة المدرسة في حال عدم توفر ختم.
-
-تحياتي
-مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">ختم أو توقيع</button>
-
-<button class="small" onclick="setFullMessage(`@ السلام عليكم ورحمة الله وبركاته
-يبدو أن هذه الرسالة مُوجَّهة إلى إدارة أو قسم أو وحدة أخرى.
-
-نحنُ (قسم المسؤولية المجتمعية والعمل التطوعي).
-
-تحياتي
-مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">موجهة لقسم آخر</button>
 
 </div>
 </div>
@@ -296,7 +395,7 @@ PNG, JPG, JPEG,
 مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">تمهيد إعادة إرسال الفرصة</button>
 </div>
 
-<div class="sub-title">الخانات</div>
+<div class="sub-title">أزرار الخانات</div>
 <div class="button-grid">
 <button class="small" onclick="insertLine(`●● خانة (اسم الجهة) بكتابة (اسم المدرسة)`)">اسم الجهة</button>
 <button class="small" onclick="insertLine(`●● خانة (مشرف الفرصة) بكتابة (اسم المنسقـ/ة للفرصة والمتواجد/ة في مدرستكم ورقم هاتفه/ـا)`)">مشرف</button>
