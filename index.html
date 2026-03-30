@@ -6,7 +6,9 @@
 <title>بُصر - محرر الردود</title>
 
 <style>
-* { box-sizing: border-box; }
+* {
+box-sizing: border-box;
+}
 
 body {
 margin: 0;
@@ -16,19 +18,19 @@ color: #222;
 }
 
 .topbar {
-background: #fff;
-border-bottom: 1px solid #ddd;
-padding: 14px 18px;
+background: white;
+padding: 12px 16px;
 display: flex;
 justify-content: space-between;
 align-items: center;
+border-bottom: 1px solid #ddd;
 gap: 10px;
 flex-wrap: wrap;
 }
 
-.topbar h1 {
-margin: 0;
+.topbar-title {
 font-size: 24px;
+font-weight: bold;
 }
 
 .top-actions {
@@ -38,131 +40,117 @@ flex-wrap: wrap;
 }
 
 .top-actions button {
-padding: 8px 14px;
+padding: 8px 12px;
 border: none;
-background: #188c2f;
-color: #fff;
-border-radius: 8px;
+background: green;
+color: white;
+border-radius: 6px;
 cursor: pointer;
 font-size: 14px;
-}
-
-.top-actions button:hover {
-background: #146f26;
+width: auto;
 }
 
 .layout {
 display: flex;
+flex-direction: row;
 min-height: calc(100vh - 70px);
 }
 
 .panel {
-width: 45%;
-background: #fff;
-border-left: 1px solid #ddd;
-padding: 16px;
+width: 42%;
+background: white;
+padding: 12px;
 overflow-y: auto;
+border-left: 1px solid #ddd;
 }
 
 .output {
-width: 55%;
-padding: 16px;
-display: flex;
-flex-direction: column;
+width: 58%;
+padding: 12px;
 }
 
 .section {
-margin-bottom: 24px;
+margin-bottom: 22px;
 }
 
 .section h3 {
 margin: 0 0 10px;
-font-size: 20px;
+font-size: 26px;
 border-bottom: 1px solid #ddd;
 padding-bottom: 6px;
 }
 
 .sub-title {
-font-size: 14px;
-color: #666;
 margin: 10px 0 6px;
+font-size: 14px;
+color: #555;
 }
 
 .button-grid,
-.names-row {
+.names-grid {
 display: flex;
 flex-wrap: wrap;
 gap: 8px;
-align-items: center;
 }
 
-.button-grid button,
-.names-row button {
-padding: 8px 10px;
-border: 1px solid #cfcfcf;
-background: #fafafa;
-border-radius: 8px;
+.small {
+padding: 6px 10px;
+border-radius: 6px;
+border: 1px solid #ccc;
 cursor: pointer;
-font-size: 14px;
-line-height: 1.5;
+background: #fafafa;
 width: auto;
+font-size: 14px;
 }
 
-.button-grid button:hover,
-.names-row button:hover {
-background: #efefef;
+.small:hover {
+background: #eee;
 }
 
-.names-row button.active {
-background: #188c2f !important;
-color: #fff;
-border-color: #188c2f;
+.active {
+background: green !important;
+color: white;
+}
+
+.output-card {
+background: white;
+border: 1px solid #ddd;
+border-radius: 10px;
+padding: 12px;
+min-height: 85vh;
+}
+
+.output-card-title {
+font-size: 22px;
+font-weight: bold;
+margin-bottom: 10px;
+}
+
+#editor {
+min-height: 78vh;
+border: 1px solid #ccc;
+padding: 12px;
+background: white;
+overflow-y: auto;
+white-space: pre-wrap;
+word-break: break-word;
+line-height: 2;
+font-size: 17px;
+outline: none;
+}
+
+.green-line {
+color: green;
+font-weight: bold;
 }
 
 .note {
 font-size: 13px;
 color: #666;
-margin-top: 8px;
+margin-top: 6px;
 }
 
-.output-card {
-background: #fff;
-border: 1px solid #ddd;
-border-radius: 10px;
-padding: 12px;
-height: 100%;
-display: flex;
-flex-direction: column;
-}
-
-.output-card strong {
-display: block;
-margin-bottom: 10px;
-font-size: 22px;
-}
-
-#editor {
-width: 100%;
-flex: 1;
-min-height: 820px;
-border: 1px solid #d5d5d5;
-border-radius: 10px;
-padding: 16px;
-background: #fff;
-overflow-y: auto;
-white-space: pre-wrap;
-word-break: break-word;
-line-height: 2;
-font-size: 18px;
-outline: none;
-}
-
-.green-line {
-color: #1f7a1f;
-font-weight: 700;
-}
-
-@media (max-width: 980px) {
+@media (max-width: 900px) {
 .layout {
 flex-direction: column;
 }
@@ -172,8 +160,12 @@ flex-direction: column;
 width: 100%;
 }
 
+.output-card {
+min-height: auto;
+}
+
 #editor {
-min-height: 460px;
+min-height: 420px;
 }
 }
 </style>
@@ -181,7 +173,7 @@ min-height: 460px;
 <body>
 
 <div class="topbar">
-<h1>بُصر - محرر الردود</h1>
+<div class="topbar-title">بُصر - محرر الردود</div>
 
 <div class="top-actions">
 <button onclick="copyAll()">نسخ</button>
@@ -195,182 +187,64 @@ min-height: 460px;
 <div class="panel">
 
 <div class="section">
-<h3>الافتتاحية</h3>
-<div class="button-grid">
-<button onclick="insertOpening()">السلام عليكم ورحمة الله وبركاته</button>
+<h3>الأسماء</h3>
+<div class="names-grid">
+<button class="small" onclick="setName(this,'منيرة عالي سرحان القرشي')">منيرة</button>
+<button class="small" onclick="setName(this,'نورة البيشي')">نورة</button>
+<button class="small" onclick="setName(this,'الجوهرة السحيم')">الجوهرة</button>
+<button class="small" onclick="setName(this,'شريفة الثمالي')">شريفة</button>
+<button class="small" onclick="setName(this,'نايف الزهراني')">نايف</button>
+<button class="small" onclick="setName(this,'بدرية الثمالي')">بدرية</button>
+<button class="small" onclick="setName(this,'عهود حلواني')">عهود</button>
+<button class="small" onclick="setName(this,'منيرة الناصري')">منيرة الناصري</button>
 </div>
+<div class="note">سيُستبدل [الاسم] بالاسم المختار.</div>
 </div>
 
 <div class="section">
-<h3>النصوص الجاهزة</h3>
+<h3>الرسائل</h3>
 <div class="button-grid">
 
-<button onclick="setFullMessage(`● السلام عليكم ورحمة الله وبركاته
-فضلًا ختم الفرصة التطوعية، أو إدراج توقيع مدير/ ة المدرسة في حال عدم توفر ختم.
-تحياتي
-مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">
-ختم أو توقيع
-</button>
-
-<button onclick="setFullMessage(`*** السلام عليكم ورحمة الله وبركاته
+<button class="small" onclick="setFullMessage(`*** السلام عليكم ورحمة الله وبركاته
 الفرصة وُجِّهت للمسؤولة عن الإدخال أ. [الاسم]
 
 ملاحظة: النموذج مُعبأ بخط اليد، لاحقًا في الفرص القادمة نأمل تعبئته إلكترونيًّا إن أمكن.
 
 تحياتي
-مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">
-خط اليد + توجيه
-</button>
+مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">خط اليد</button>
 
-<button onclick="setFullMessage(`*** السلام عليكم ورحمة الله وبركاته
-النموذج مُعبأ بخط اليد، نأمل تعبئته إلكترونيًّا وإعادة إرساله.
-
-تحياتي
-مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">
-تعبئة إلكترونيًّا وإعادة إرساله
-</button>
-
-<button onclick="setFullMessage(`●●● السلام عليكم ورحمة الله وبركاته
-الرسالة لا تحتوي على مرفقات
-
-إن كانت فرصة تطوعية فضلًا إرفاقها من جديد بصيغة PDF على هذا البريد.
-
-وإن كانت كُشوف وشواهد على تنفيذ الفرصة فتُوجَّه إلى بريد منسقـ / ة الفرصة في (قسم المسؤولية المجتمعية والعمل التطوعي).
-
-تحياتي
-مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">
-لا توجد مرفقات
-</button>
-
-<button onclick="setFullMessage(`●●● السلام عليكم ورحمة الله وبركاته
-المرفق غير واضح.
-
-نأمل إعادة تصويره من جديد بدقة أفضل، وإعادة إرفاقه.
-
-نأمل إعادة إدراجه من جديد وحفظه بصيغة PDF وإرفاقه في البريد.
-
-لاحقًا نأمل إرسال الفرص بصيغة PDF إن أمكن.
-
-وإن تعذّر ذلك فنأمل تصويرها بقياسات أفضل وبدقة أعلى.
-
-تحياتي
-مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">
-المرفق غير واضح
-</button>
-
-<button onclick="setFullMessage(`●●● السلام عليكم ورحمة الله وبركاته
-الملف المُرفق تعذَّرت مُعاينتُه فضلًا إعادة إرفاقه بصيغة PDF إن أمكن.
-
-وإن تعذَّر ذلك فنأمل إرساله بإحدى الصيغ التالية: PNG, JPG, JPEG.
-
-تحياتي
-مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">
-تعذرت مُعاينته
-</button>
-
-<button onclick="setFullMessage(`●^● السلام عليكم ورحمة الله وبركاته
+<button class="small" onclick="setFullMessage(`●^● السلام عليكم ورحمة الله وبركاته
 المُرفَق صُوِّر بلقطة شاشة لأن الصيغة المُرسلة غير مدعومة.
 
 لاحقًا نأمل إرسال النموذج بصيغة PDF وإن تعذَّر فالصيغ التالية مدعومة
 PNG, JPG, JPEG,
 
 تحياتي
-مسؤولة بريد الفرص التطوعية: منيرة القرشي`)">
-لقطة شاشة
-</button>
+مسؤولة بريد الفرص التطوعية: منيرة القرشي`)">لقطة شاشة</button>
 
-<button onclick="setFullMessage(`# السلام عليكم ورحمة الله وبركاته
-هذا البريد مُخصَّص لنماذج الفرص التطوعية فقط.
-
-فضلًا إرسال كُشوف وشواهد الفرص التطوعية (الصور دون الفيديو) إلى البريد الخاص بمنسقـ/ة الفرصة في (قسم المسؤولية المجتمعية والعمل التطوعي).
-
-تحياتي
-مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">
-البريد مخصص للفرص فقط
-</button>
-
-<button onclick="setFullMessage(`&&&& السلام عليكم ورحمة الله وبركاته
-الفرصة أُرسِلت سابقًا ووُجِّهت للمسؤولة عن الإدخال أ. [الاسم]
-
-الرجاء عدم تكرار إرسال الفرص التطوعية؛ لأن هذا الأمر يستهلك وقتًا وجُهدًا من المسؤولة عن التوجيه في عملية البحث والمطابقة لتفادي عدم التكرار!
-
-وأي تعديلات فضلًا إرسالها للمنسقـ / ة في (قسم المسؤولية المجتمعية والعمل التطوعي).
-
-تحياتي
-مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">
-أُرسلت سابقًا
-</button>
-
-<button onclick="setFullMessage(`@ السلام عليكم ورحمة الله وبركاته
-يبدو أن هذه الرسالة مُوجَّهة إلى إدارة أو قسم أو وحدة أخرى.
-
-نحنُ (قسم المسؤولية المجتمعية والعمل التطوعي).
-
-تحياتي
-مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">
-موجهة لقسم آخر
-</button>
-
-<button onclick="setFullMessage(`^^^ السلام عليكم ورحمة الله وبركاته
+<button class="small" onclick="setFullMessage(`^^^ السلام عليكم ورحمة الله وبركاته
 الفرصة وُجِّهت للمسؤولة عن الإدخال أ. [الاسم]
 
 لاحقًا نأمل إرسال الفرصة بصيغة PDF إن أمكن.
 
 تحياتي
-مسؤولة بريد الفرص التطوعية: منيرة القرشي`)">
-إرسال PDF إن أمكن
-</button>
+مسؤولة بريد الفرص التطوعية: منيرة القرشي`)">PDF</button>
 
-<button onclick="setFullMessage(`%●% السلام عليكم ورحمة الله وبركاته
-قسم المسؤولية المجتمعية والعمل التطوعي أعدَّ (نموذج تصميم الفرصة التطوعية) وهذا النموذج مُتوافق مع منصة العمل التطوعي؛ لذا نأمل تعبئة النموذج المُرفق بالفرصة التطوعية، كل فرصة مُستقلة عن الأخرى. ويُشترط توقيع مدير/ة المدرسة والختم إن توفر.
+<button class="small" onclick="setFullMessage(`∞ السلام عليكم ورحمة الله وبركاته
+فضلًا إرسال الموقع الجغرافي إلى البريد الخاص بمنسق/ة الفرصة أ. [الاسم]
 
 تحياتي
-مسؤولة بريد الفرص التطوعية: منيرة القرشي`)">
-نموذج القسم للفرص
-</button>
+مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">الموقع</button>
 
-<button onclick="setFullMessage(`∞ السلام عليكم ورحمة الله وبركاته
-فضلًا إرسال الموقع الجغرافي إلى البريد الخاص بمنسقـ/ة الفرصة في (قسم المسؤولية المجتمعية والعمل التطوعي) أ. [الاسم]
-
-تحياتي
-مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">
-إرسال الموقع
-</button>
-
-<button onclick="setFullMessage(`%%% السلام عليكم ورحمة الله وبركاته
-فرص المدارس الأهلية للطلبة والطالبات تُرسل لـ (مكتب التعليم الخاص في إدارة التعليم) هو المسؤول عن إدراجها في منصة العمل التطوعي.
-
-أمَّا فرص المعلمين والمعلمات فتُرسل إلى هذا البريد ..
-
-تحياتي
-
-مسؤولة بريد الفرص التطوعيَّة: منيرة القرشي`)">
-مدارس أهلية 1
-</button>
-
-<button onclick="setFullMessage(`%%% السلام عليكم ورحمة الله وبركاته
-فرص المدارس الأهلية للطلبة والطالبات تُرسل لـ (مكتب التعليم الخاص في إدارة التعليم) هو المسؤول عن إدراجها في منصة العمل التطوعي.
-
-أمَّا فرص المعلمين والمعلمات فتُرسل إلى هذا البريد ..
-
-لذلك نأمل فرز فرص المعلمين والمعلمات في ملف خاص بها وإرسالها إلينا دُونًا عن فرص الطلاب والطالبات.
-
-تحياتي:
-مسؤولة بريد الفرص التطوعيَّة: منيرة القرشي`)">
-مدارس أهلية 2
-</button>
-
-<button onclick="setFullMessage(`~~~ السَّلام عليكم ورحمة الله وبركاته
+<button class="small" onclick="setFullMessage(`~~~ السَّلام عليكم ورحمة الله وبركاته
 حرصًا على ضمان وصول (نماذج الفرص التَّطوعية) إلى بريد قسم المسؤولية المجتمعية والعمل التطوعي دون أن تُصنَّف كرسائل Spam، نأمل منكم إضافة البريد الإلكتروني للقسم taifedugov@gmail.com في دفتر العناوين الخاص بحسابكم على Gmail.
 
 وقد تمَّ إعداد ملف توضيحي مُرفق يشرح الخطوات بطريقة مُبسطة وبالصُّور.
 
 تحياتي
-مسؤولة بريد الفرص التَّطوعية: منيرة عالي سرحان القرشي`)">
-إضافة عنوان البريد
-</button>
+مسؤولة بريد الفرص التَّطوعية: منيرة عالي سرحان القرشي`)">إضافة البريد</button>
 
-<button onclick="setFullMessage(`●*● السلام عليكم ورحمة الله وبركاته
+<button class="small" onclick="setFullMessage(`●*● السلام عليكم ورحمة الله وبركاته
 تقريركم الخاص باليوم السعودي والعالمي للتطوع وصل وأُحيلَ إلى الموظفة المُختصَّة.
 
 للتنويه حسب التوجيه الأخير؛ فهذا البريد مُعتمد حاليًا لاستقبال التقارير الختامية الخاصة باليوم السعودي والعالمي للتطوع بالإضافة إلى نماذج الفرص التطوعية.
@@ -380,19 +254,31 @@ PNG, JPG, JPEG,
 شكرًا لتعاونكم ..
 
 تحياتي
-مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">
-اليوم السعودي والعالمي للتطوع
-</button>
+مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">التقرير</button>
+
+<button class="small" onclick="setFullMessage(`● السلام عليكم ورحمة الله وبركاته
+فضلًا ختم الفرصة التطوعية، أو إدراج توقيع مدير/ ة المدرسة في حال عدم توفر ختم.
+
+تحياتي
+مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">ختم أو توقيع</button>
+
+<button class="small" onclick="setFullMessage(`@ السلام عليكم ورحمة الله وبركاته
+يبدو أن هذه الرسالة مُوجَّهة إلى إدارة أو قسم أو وحدة أخرى.
+
+نحنُ (قسم المسؤولية المجتمعية والعمل التطوعي).
+
+تحياتي
+مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">موجهة لقسم آخر</button>
 
 </div>
 </div>
 
 <div class="section">
-<h3>الخانات الناقصة</h3>
+<h3>الخانات</h3>
 
 <div class="sub-title">قبل أزرار الخانات</div>
 <div class="button-grid">
-<button onclick="setFullMessage(`السلام عليكم ورحمة الله وبركاته
+<button class="small" onclick="setFullMessage(`السلام عليكم ورحمة الله وبركاته
 
 الفرصة وُجِّهت للمسؤولة عن الإدخال أ. [الاسم] وأي تعديلات فضلًا إرسالها للمنسقة المُتواصلة مع مدرستكم في ( قسم المسؤولية المجتمعية والعمل التطوعي ) أ. [الاسم]
 
@@ -400,74 +286,50 @@ PNG, JPG, JPEG,
 
 
 تحياتي
-مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">
-تمهيد الملاحظات
-</button>
+مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">تمهيد الملاحظات</button>
 
-<button onclick="setFullMessage(`السلام عليكم ورحمة الله وبركاته
+<button class="small" onclick="setFullMessage(`السلام عليكم ورحمة الله وبركاته
 
 نأمل إعادة إرسال الفرصة بعد تعديل الخانة التالية / الخانات التالية:
 
 تحياتي
-مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">
-تمهيد إعادة إرسال الفرصة
-</button>
+مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">تمهيد إعادة إرسال الفرصة</button>
 </div>
 
 <div class="sub-title">الخانات</div>
 <div class="button-grid">
-<button onclick="insertLine(`●● خانة (اسم الجهة) بكتابة (اسم المدرسة)`)">اسم الجهة</button>
-<button onclick="insertLine(`●● خانة (مشرف الفرصة) بكتابة (اسم المنسقـ/ة للفرصة والمتواجد/ة في مدرستكم ورقم هاتفه/ـا)`)">مشرف الفرصة</button>
-<button onclick="insertLine(`●● خانة (منسق الفرصة) بكتابة (اسم المنسقـ/ة المتواجد/ة في قسم المسؤولية المجتمعية والعمل التطوعي) ورقم هاتفها الجوال (05.........)`)">منسق الفرصة</button>
-<button onclick="insertLine(`●● خانة (عدد المتطوعين) بكتابة العدد`)">عدد المتطوعين</button>
-<button onclick="insertLine(`●● خانة (العمر المناسب للمتطوعين) باختيار العمر`)">العمر المناسب</button>
-<button onclick="insertLine(`●● خانة (طبيعة الفرصة ووقتها ص / م)`)">طبيعة الفرصة</button>
-<button onclick="insertLine(`●● خانة (عدد الساعات في اليوم)`)">عدد الساعات</button>
-<button onclick="insertLine(`●● خانة (موقع الفرصة التطوعية) يُكتب`)">موقع الفرصة</button>
-<button onclick="insertLine(`●● خانة (الأيام المتاحة للفرصة)`)">الأيام المتاحة</button>
-<button onclick="insertLine(`●● خانة (الإطار الزمني للفرصة - ميلادي)`)">الإطار الزمني</button>
-<button onclick="insertLine(`●● خانة (المهام المطلوبة من المتطوع) بكتابة 3 مهام كحد أدنى.`)">المهام المطلوبة</button>
+<button class="small" onclick="insertLine(`●● خانة (اسم الجهة) بكتابة (اسم المدرسة)`)">اسم الجهة</button>
+<button class="small" onclick="insertLine(`●● خانة (مشرف الفرصة) بكتابة (اسم المنسقـ/ة للفرصة والمتواجد/ة في مدرستكم ورقم هاتفه/ـا)`)">مشرف</button>
+<button class="small" onclick="insertLine(`●● خانة (منسق الفرصة) بكتابة (اسم المنسقـ/ة المتواجد/ة في قسم المسؤولية المجتمعية والعمل التطوعي) ورقم هاتفها الجوال (05.........)`)">منسق</button>
+<button class="small" onclick="insertLine(`●● خانة (عدد المتطوعين) بكتابة العدد`)">عدد</button>
+<button class="small" onclick="insertLine(`●● خانة (العمر المناسب للمتطوعين) باختيار العمر`)">العمر</button>
+<button class="small" onclick="insertLine(`●● خانة (طبيعة الفرصة ووقتها ص / م)`)">طبيعة الفرصة</button>
+<button class="small" onclick="insertLine(`●● خانة (عدد الساعات في اليوم)`)">عدد الساعات</button>
+<button class="small" onclick="insertLine(`●● خانة (موقع الفرصة التطوعية) يُكتب`)">موقع الفرصة</button>
+<button class="small" onclick="insertLine(`●● خانة (الأيام المتاحة للفرصة)`)">الأيام المتاحة</button>
+<button class="small" onclick="insertLine(`●● خانة (الإطار الزمني للفرصة - ميلادي)`)">الإطار الزمني</button>
+<button class="small" onclick="insertLine(`●● خانة (المهام المطلوبة من المتطوع) بكتابة 3 مهام كحد أدنى.`)">المهام المطلوبة</button>
 </div>
 
 <div class="sub-title">بعد أزرار الخانات</div>
 <div class="button-grid">
-<button onclick="insertLine(`النموذج المُرفق يُوضِّح ذلك`)">
-النموذج المُرفق يُوضِّح ذلك
-</button>
-
-<button onclick="insertLine(`لاحقًا نأمل منكم إرسال النموذج مُكتمِل البيانات؛ وذلك لسهولة التوجيه، وسرعة التنفيذ`)">
-لاحقًا نأمل منكم...
-</button>
+<button class="small" onclick="insertLine(`النموذج المُرفق يُوضِّح ذلك`)">إيضاح النموذج</button>
+<button class="small" onclick="insertLine(`لاحقًا نأمل منكم إرسال النموذج مُكتمِل البيانات؛ وذلك لسهولة التوجيه، وسرعة التنفيذ`)">لاحقًا نأمل...</button>
 </div>
 </div>
 
 <div class="section">
 <h3>الختام</h3>
 <div class="button-grid">
-<button onclick="insertClosing()">تحياتي + التوقيع</button>
+<button class="small" onclick="insertClosing()">تحياتي + التوقيع</button>
 </div>
-</div>
-
-<div class="section">
-<h3>الأسماء</h3>
-<div class="names-row">
-<button onclick="setName(this,'الجوهرة السحيم')">الجوهرة السحيم</button>
-<button onclick="setName(this,'منيرة الناصري')">منيرة الناصري</button>
-<button onclick="setName(this,'نورة البيشي')">نورة البيشي</button>
-<button onclick="setName(this,'شريفة الثمالي')">شريفة الثمالي</button>
-<button onclick="setName(this,'عهود حلواني')">عهود حلواني</button>
-<button onclick="setName(this,'نايف الزهراني')">نايف الزهراني</button>
-<button onclick="setName(this,'بدرية الثمالي')">بدرية الثمالي</button>
-<button onclick="setName(this,'منيرة عالي سرحان القرشي')">منيرة عالي سرحان القرشي</button>
-</div>
-<div class="note">سيُستبدل [الاسم] بالاسم المختار فقط.</div>
 </div>
 
 </div>
 
 <div class="output">
 <div class="output-card">
-<strong>الرسالة</strong>
+<div class="output-card-title">الرسالة</div>
 <div id="editor" contenteditable="true"></div>
 </div>
 </div>
@@ -581,7 +443,7 @@ selection.addRange(range);
 
 function setName(button, name) {
 activeName = name;
-document.querySelectorAll('.names-row button').forEach(btn => btn.classList.remove('active'));
+document.querySelectorAll('.names-grid button').forEach(btn => btn.classList.remove('active'));
 button.classList.add('active');
 }
 
