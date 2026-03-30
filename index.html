@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>بُصر - محرر الردود</title>
 
 <style>
@@ -22,9 +22,12 @@ border-bottom: 1px solid #ddd;
 
 button {
 padding: 8px;
+margin: 4px 0;
 border-radius: 6px;
 border: 1px solid #ccc;
 cursor: pointer;
+display: block;
+width: 100%;
 }
 
 .layout {
@@ -32,14 +35,14 @@ display: flex;
 }
 
 .panel {
-width: 45%;
+width: 40%;
 background: white;
 padding: 12px;
 overflow-y: auto;
 }
 
 .output {
-width: 55%;
+width: 60%;
 padding: 12px;
 }
 
@@ -53,10 +56,6 @@ white-space: pre-wrap;
 line-height: 2;
 }
 
-.green {
-color: green;
-font-weight: bold;
-}
 .active {
 background: green;
 color: white;
@@ -79,38 +78,7 @@ color: white;
 
 <div class="panel">
 
-<h3>النصوص</h3>
-
-<button onclick="setMsg(`*** السلام عليكم ورحمة الله وبركاته
-الفرصة وُجِّهت للمسؤولة عن الإدخال أ. [الاسم]
-ملاحظة: النموذج مُعبأ بخط اليد، لاحقًا في الفرص القادمة نأمل تعبئته إلكترونيًّا إن أمكن.
-تحياتي
-مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">
-خط اليد + توجيه
-</button>
-
-<button onclick="setMsg(`●^● السلام عليكم ورحمة الله وبركاته
-المُرفَق صُوِّر بلقطة شاشة لأن الصيغة المُرسلة غير مدعومة.
-لاحقًا نأمل إرسال النموذج بصيغة PDF وإن تعذَّر فالصيغ التالية مدعومة
-PNG, JPG, JPEG,
-تحياتي
-مسؤولة بريد الفرص التطوعية: منيرة القرشي`)">
-لقطة شاشة
-</button>
-
-<hr>
-
-<h3>الخانات</h3>
-
-<button onclick="addField('اسم الجهة')">اسم الجهة</button>
-<button onclick="addField('مشرف الفرصة')">مشرف</button>
-<button onclick="addField('منسق الفرصة')">منسق</button>
-<button onclick="addField('عدد المتطوعين')">عدد</button>
-<button onclick="addField('العمر المناسب')">العمر</button>
-
-<hr>
-
-<h3>الأسماء</h3>
+<h3>اختيار الاسم</h3>
 
 <button onclick="setName(this,'منيرة عالي سرحان القرشي')">منيرة</button>
 <button onclick="setName(this,'نورة البيشي')">نورة</button>
@@ -118,9 +86,54 @@ PNG, JPG, JPEG,
 
 <hr>
 
-<h3>🔥 الرسالة الذكية</h3>
+<h3>الرسائل</h3>
 
-<button onclick="smartMessage()">إنشاء رسالة كاملة</button>
+<button onclick="setMsg(`*** السلام عليكم ورحمة الله وبركاته
+الفرصة وُجِّهت للمسؤولة عن الإدخال أ. [الاسم]
+
+ملاحظة: النموذج مُعبأ بخط اليد، لاحقًا في الفرص القادمة نأمل تعبئته إلكترونيًّا إن أمكن.
+تحياتي
+مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">
+خط اليد + توجيه
+</button>
+
+<button onclick="setMsg(`^^^ السلام عليكم ورحمة الله وبركاته
+الفرصة وُجِّهت للمسؤول عن الإدخال أ. [الاسم]
+لاحقًا نأمل إرسال الفرصة بصيغة PDF إن أمكن.
+تحياتي
+مسؤولة بريد الفرص التطوعية: منيرة القرشي`)">
+PDF
+</button>
+
+<button onclick="setMsg(`∞ السلام عليكم ورحمة الله وبركاته
+فضلاً إرسال الموقع الجغرافي إلى البريد الخاص بمنسق/ة الفرصة في
+(قسم المسؤولية المجتمعية والعمل التطوعي) أ. [الاسم]
+تحياتي
+مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">
+الموقع
+</button>
+
+<button onclick="setMsg(`●*● السلام عليكم ورحمة الله وبركاته
+تقريركم الخاص باليوم السعودي والعالمي للتطوع أُحيل إلى الموظفة المُختصَّة.
+للتنويه حسب التوجيه الأخير؛ فهذا البريد مُعتمد حاليًا لاستقبال التقارير الختامية الخاصة باليوم السعودي والعالمي للتطوع بالإضافة إلى نماذج الفرص التطوعية.
+أما بقية الشواهد والتقارير الخاصة بالفرص الأخرى فهي على مسارها المُعتاد تُرسل إلى بريد المنسقين والمنسقات في قسم المسؤولية المجتمعية والعمل التطوعي.
+شكرًا لتعاونكم ..
+تحياتي
+مسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي`)">
+اليوم السعودي والعالمي للتطوع
+</button>
+
+<hr>
+
+<h3>الخانات (للرسالة الذكية)</h3>
+
+<button onclick="addField('اسم الجهة')">اسم الجهة</button>
+<button onclick="addField('مشرف الفرصة')">مشرف</button>
+<button onclick="addField('منسق الفرصة')">منسق</button>
+<button onclick="addField('عدد المتطوعين')">عدد</button>
+<button onclick="addField('العمر المناسب')">العمر</button>
+
+<button onclick="smartMessage()">إنشاء رسالة ذكية</button>
 
 </div>
 
@@ -132,31 +145,35 @@ PNG, JPG, JPEG,
 
 <script>
 
-let name = "";
+let activeName = "";
 let fields = [];
 
-function setName(btn, n) {
-name = n;
-document.querySelectorAll("button").forEach(b=>b.classList.remove("active"));
+function setName(btn, name) {
+activeName = name;
+
+document.querySelectorAll("button").forEach(b => b.classList.remove("active"));
 btn.classList.add("active");
 }
 
 function applyName(text) {
-return text.replace(/\[الاسم\]/g, name);
+if (!activeName) return text;
+
+return text
+.replace(/\[الاسم\]/g, activeName)
+.replace(/\]الاسم\[/g, activeName);
 }
 
 function setMsg(text) {
 document.getElementById("editor").innerText = applyName(text);
 }
 
-function addField(field) {
-fields.push(field);
+function addField(f) {
+fields.push(f);
 }
 
 function smartMessage() {
 
 let msg = "السلام عليكم ورحمة الله وبركاته\n\n";
-
 msg += "نأمل تعبئة الخانات التالية:\n";
 
 fields.forEach(f => {
@@ -164,7 +181,6 @@ msg += "●● خانة (" + f + ")\n";
 });
 
 msg += "\nلاحقًا نأمل منكم إرسال النموذج مكتمل البيانات.\n\n";
-
 msg += "تحياتي\nمسؤولة بريد الفرص التطوعية: منيرة عالي سرحان القرشي";
 
 document.getElementById("editor").innerText = msg;
